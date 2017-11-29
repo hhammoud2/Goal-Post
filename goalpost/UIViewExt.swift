@@ -27,4 +27,11 @@ extension UIView {
             self.frame.origin.y += deltaY
         }, completion: nil)
     }
+    
+    func presentUndo(_ viewControllerToPresent: UIViewController) {
+        let transition = CATransition()
+        transition.duration = 0.3
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromBottom
+    }
 }

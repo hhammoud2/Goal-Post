@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class FinishGoalViewController: UIViewController {
 
@@ -140,8 +141,26 @@ class FinishGoalViewController: UIViewController {
     //MARK: - Button/Touch Functions
     
     @objc func createGoalButtonPressed( _ sender: UIButton) {
-        //Pass data in Core Data model
         self.view.endEditing(true)
+        
+        //Pass data in Core Data model
+        if pointsTextField.text != "" {
+            if Int(pointsTextField.text!)! > 99 {
+                //Error must be less than 99
+                let alert = UIAlertController(title: "Too many points!", message: "You must enter a value less than 100", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Default action"), style: .`default`, handler: { _ in
+                    NSLog("The \"OK\" alert occured.")
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
+            else {
+                self.saveData(completion: { (complete) in
+                    if complete {
+                        dismiss(animated: true, completion: nil)
+                    }
+                })
+            }
+        }
     }
     
     @objc func backButtonPressed( _ sender: UIButton) {
@@ -152,8 +171,27 @@ class FinishGoalViewController: UIViewController {
         self.view.endEditing(true) //This will hide the keyboard
     }
     
+    func saveData(completion: (_ finished: Bool) -> ()) {
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        let goal = Goal(context: managedContext)
+        
+        goal.goalDescription = goalDescription
+        goal.goalType = goalType.rawValue
+        goal.goalCompletionValue = Int32(pointsTextField.text!)!
+        goal.goalProgressValue = Int32(0)
+        
+        do {
+            try managedContext.save()
+            completion(true)
+        } catch {
+            debugPrint("Could not save: \(error.localizedDescription)")
+            completion(false)
+        }
+    }
+    
 }
 
 extension FinishGoalViewController: UITextFieldDelegate {
-    
+
 }
+
