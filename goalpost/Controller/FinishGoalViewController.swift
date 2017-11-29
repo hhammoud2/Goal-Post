@@ -15,6 +15,7 @@ class FinishGoalViewController: UIViewController {
     
     var goalDescription: String!
     var goalType: GoalType!
+    let maxCompletionPoints = 99
     
     let titleView: UIView = {
         let titleView = UIView()
@@ -145,7 +146,7 @@ class FinishGoalViewController: UIViewController {
         
         //Pass data in Core Data model
         if pointsTextField.text != "" {
-            if Int(pointsTextField.text!)! > 99 {
+            if Int(pointsTextField.text!)! > maxCompletionPoints {
                 //Error must be less than 99
                 let alert = UIAlertController(title: "Too many points!", message: "You must enter a value less than 100", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Default action"), style: .`default`, handler: { _ in
