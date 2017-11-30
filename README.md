@@ -1,5 +1,5 @@
 # Goal-Post
-![](/screenshots/Welcome screen.png?raw=true)
+![](Goal-Post/screenshots/Welcome screen.pngraw=true)
 
 ## Track long and short term goals
 
